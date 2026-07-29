@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 import type { Advertisement } from '@/types';
+
+// استبدل هذه القيم ببيانات مشروعك الفعلية في سوبابيس إذا لزم الأمر
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 interface Props {
   location: string;
@@ -19,7 +25,6 @@ export default function AdBanner({ location, size = 'banner', className = '' }: 
   const [ad, setAd] = useState<Advertisement | null>(null);
   const cfg = SIZE_CONFIG[size];
 
-  // جلب الإعلان المناسب لهذا الموقع من قاعدة البيانات سوبابيس
   useEffect(() => {
     async function fetchAd() {
       try {
@@ -34,7 +39,6 @@ export default function AdBanner({ location, size = 'banner', className = '' }: 
         if (!error && data) {
           setAd(data);
           
-          // تحديث عداد الظهور (Impressions) في السحابة بالطريقة الصحيحة
           await supabase
             .from('advertisements')
             .update({ impressions: (data.impressions || 0) + 1 })
@@ -48,11 +52,9 @@ export default function AdBanner({ location, size = 'banner', className = '' }: 
     fetchAd();
   }, [location]);
 
-  // دالة لتسجيل النقرات (Clicks) وتوجيه المستخدم
   const handleAdClick = async () => {
     if (ad) {
       try {
-        // تحديث عداد النقرات في السحابة
         await supabase
           .from('advertisements')
           .update({ clicks: (ad.clicks || 0) + 1 })
