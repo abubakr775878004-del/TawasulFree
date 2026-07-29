@@ -83,7 +83,7 @@ export default function GamePlayPage() {
           {/* Rules */}
           <div className="glass-card p-5">
             <h3 className="font-bold text-white mb-3 flex items-center gap-2">
-              <Shield size={16} className="text-brand-secondary" />
+              <Shield size= {16} className="text-brand-secondary" />
               قواعد اللعبة
             </h3>
             <ul className="space-y-2 text-white/50 text-sm">
@@ -110,9 +110,6 @@ export default function GamePlayPage() {
           <DynamicAdSlot slotId="game_page_sidebar_ad" defaultSize="100×300" />
         </div>
       </div>
-    </div>
-  );
-}
     </div>
   );
 }
