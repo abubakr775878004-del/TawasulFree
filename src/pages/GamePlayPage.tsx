@@ -23,7 +23,7 @@ export default function GamePlayPage() {
   }
 
   return (
-    <div className="page-enter page-container py-10">
+    <div className="page-enter page-container py-10 pb-20">
       {/* Back */}
       <button
         onClick={() => navigate('/games')}
@@ -35,16 +35,16 @@ export default function GamePlayPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Game Area */}
-        <div className="lg:col-span-2">
-          <div className="mb-6">
+        <div className="lg:col-span-2 space-y-6">
+          <div>
             <h1 className="text-3xl font-black text-white mb-2">{game.titleAr}</h1>
             <p className="text-white/50">{game.description}</p>
           </div>
 
           <QuizGameEngine game={game} onClose={() => navigate('/games')} />
 
-          {/* Dynamic Ad Slot - إعلان تفاعلي أسفل اللعبة */}
-          <div className="mt-8">
+          {/* Dynamic Ad Slot - إعلان تفاعلي أسفل اللعبة مع مساحة كافية للزر */}
+          <div className="pt-4 pb-6">
             <DynamicAdSlot slotId="game_page_bottom_banner" defaultSize="90×728" />
           </div>
         </div>
@@ -83,7 +83,7 @@ export default function GamePlayPage() {
           {/* Rules */}
           <div className="glass-card p-5">
             <h3 className="font-bold text-white mb-3 flex items-center gap-2">
-              <Shield size= {16} className="text-brand-secondary" />
+              <Shield size={16} className="text-brand-secondary" />
               قواعد اللعبة
             </h3>
             <ul className="space-y-2 text-white/50 text-sm">
@@ -107,7 +107,9 @@ export default function GamePlayPage() {
           </div>
 
           {/* Dynamic Ad Slot - إعلان تفاعلي في الشريط الجانبي */}
-          <DynamicAdSlot slotId="game_page_sidebar_ad" defaultSize="100×300" />
+          <div className="pb-6">
+            <DynamicAdSlot slotId="game_page_sidebar_ad" defaultSize="100×300" />
+          </div>
         </div>
       </div>
     </div>
