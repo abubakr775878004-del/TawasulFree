@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Trophy, Gamepad2, Star, Home, User, Settings, LogOut } from 'lucide-react';
+import { Menu, X, Trophy, Gamepad2, Star, Home, User, Settings, LogOut, ShieldAlert } from 'lucide-react';
 import { useApp } from '@/stores/appStore';
 import logoImg from '@/assets/logo.png';
 
@@ -44,6 +44,17 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
+            
+            {/* زر لوحة الإدارة يظهر مباشرة في الشريط العلوي للشاشات الكبيرة إذا كان مدير */}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className={`nav-link text-sm text-brand-secondary bg-brand-secondary/20 hover:bg-brand-secondary/30 ${isActive('/admin') ? 'ring-2 ring-brand-secondary' : ''}`}
+              >
+                <Settings size={16} />
+                لوحة الإدارة
+              </Link>
+            )}
           </div>
 
           {/* User Area */}
@@ -55,11 +66,11 @@ export default function Navbar() {
                   className="flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-xl px-3 py-2 transition-all duration-200 min-h-[44px]"
                 >
                   <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-sm font-bold">
-                    {user.fullName.charAt(0)}
+                    {user.fullName ? user.fullName.charAt(0) : 'م'}
                   </div>
                   <div className="hidden sm:block text-right">
-                    <div className="text-xs font-bold text-white leading-none">{user.fullName.split(' ')[0]}</div>
-                    <div className="text-xs text-brand-success font-bold">{user.points.toLocaleString()} نقطة</div>
+                    <div className="text-xs font-bold text-white leading-none">{user.fullName ? user.fullName.split(' ')[0] : 'مدير'}</div>
+                    <div className="text-xs text-brand-success font-bold">{user.points?.toLocaleString() || 0} نقطة</div>
                   </div>
                 </button>
                 {profileOpen && (
@@ -72,16 +83,14 @@ export default function Navbar() {
                       <User size={16} className="text-brand-secondary" />
                       ملفي الشخصي
                     </Link>
-                    {isAdmin && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-2 px-4 py-3 hover:bg-white/10 text-sm text-white transition-colors"
-                      >
-                        <Settings size={16} className="text-brand-secondary" />
-                        لوحة الإدارة
-                      </Link>
-                    )}
+                    <Link
+                      to="/admin"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center gap-2 px-4 py-3 hover:bg-brand-secondary/20 text-sm text-brand-secondary font-bold transition-colors"
+                    >
+                      <Settings size={16} />
+                      لوحة الإدارة (سريع)
+                    </Link>
                     <hr className="border-white/10" />
                     <button
                       onClick={() => { logout(); setProfileOpen(false); }}
@@ -94,13 +103,23 @@ export default function Navbar() {
                 )}
               </div>
             ) : (
-              <button
-                onClick={() => setShowRegModal(true)}
-                className="btn-primary text-sm py-2 px-4"
-              >
-                <User size={16} />
-                انضم الآن
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowRegModal(true)}
+                  className="btn-primary text-sm py-2 px-4"
+                >
+                  <User size={16} />
+                  انضم الآن
+                </button>
+                {/* زر وصول سريع للإدارة حتى لو لم يتم تسجيل الدخول كعميل */}
+                <Link
+                  to="/admin"
+                  className="p-2 bg-white/10 hover:bg-white/20 text-brand-secondary rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  title="لوحة الإدارة"
+                >
+                  <Settings size={20} />
+                </Link>
+              </div>
             )}
 
             {/* Mobile menu button */}
@@ -131,16 +150,18 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
-            {isAdmin && (
-              <Link
-                to="/admin"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 transition-colors"
-              >
-                <Settings size={18} />
-                لوحة الإدارة
-              </Link>
-            )}
+            
+            {/* زر لوحة الإدارة يظهر بوضوح في قائمة الجوال */}
+            <Link
+              to="/admin"
+              onClick={() => setMenuOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                isActive('/admin') ? 'text-brand-secondary bg-brand-secondary/20' : 'text-brand-secondary hover:bg-white/5'
+              }`}
+            >
+              <Settings size={18} />
+              لوحة الإدارة والتحكم
+            </Link>
           </div>
         )}
       </div>
