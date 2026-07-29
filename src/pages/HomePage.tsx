@@ -6,7 +6,8 @@ import CompetitionCard from '@/components/features/CompetitionCard';
 import LeaderboardTable from '@/components/features/LeaderboardTable';
 import WinnersSection from '@/components/features/WinnersSection';
 import AnnouncementBanner from '@/components/features/AnnouncementBanner';
-import AdBanner from '@/components/features/AdBanner';
+import { DynamicAdSlot } from '@/components/DynamicAdSlot';
+import { AdminLoginButton } from '@/components/AdminLoginButton';
 import { MOCK_GAMES, MOCK_COMPETITIONS, MOCK_LEADERBOARD, MOCK_WEEKLY_WINNERS, MOCK_ANNOUNCEMENTS } from '@/constants/data';
 import heroBanner from '@/assets/hero-banner.jpg';
 
@@ -51,6 +52,11 @@ export default function HomePage() {
         </div>
 
         <div className="relative page-container py-20">
+          {/* زر دخول المدير يظهر في أعلى الصفحة للتحكم الفوري */}
+          <div className="mb-6 flex justify-end">
+            <AdminLoginButton />
+          </div>
+
           <div className="max-w-3xl">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-brand-secondary/20 border border-brand-secondary/40 rounded-full px-4 py-2 mb-6 animate-fade-in">
@@ -112,9 +118,9 @@ export default function HomePage() {
         <AnnouncementBanner announcements={MOCK_ANNOUNCEMENTS} />
       </section>
 
-      {/* Ad Banner */}
+      {/* Dynamic Ad Banner - العلوي (قابل للتعديل من لوحة المدير) */}
       <section className="page-container mt-8">
-        <AdBanner location="home-top" size="banner" />
+        <DynamicAdSlot slotId="home_top_banner" defaultSize="90×728" />
       </section>
 
       {/* Featured Games */}
@@ -137,9 +143,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Middle Ad */}
+      {/* Dynamic Middle Ad - الأوسط (قابل للتعديل من لوحة المدير) */}
       <section className="page-container mt-12">
-        <AdBanner location="home-middle" size="square" />
+        <DynamicAdSlot slotId="home_middle_square" defaultSize="250×300" />
       </section>
 
       {/* Competitions + Leaderboard */}
@@ -197,9 +203,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Bottom Ad */}
+      {/* Dynamic Bottom Ad - السفلي (قابل للتعديل من لوحة المدير) */}
       <section className="page-container mt-12 mb-8">
-        <AdBanner location="home-bottom" size="banner" />
+        <DynamicAdSlot slotId="home_bottom_banner" defaultSize="90×728" />
       </section>
     </div>
   );
