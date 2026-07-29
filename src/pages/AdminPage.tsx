@@ -84,7 +84,6 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
                 {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
-            <p className="text-white/20 text-xs mt-1">تلميح: tawasul2024</p>
           </div>
           <button type="submit" disabled={loading} className="btn-primary w-full py-3">
             {loading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <>
@@ -241,7 +240,6 @@ export default function AdminPage() {
                 ))}
               </div>
 
-              {/* Charts placeholder */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="glass-card p-5">
                   <h3 className="font-bold text-white mb-4 flex items-center gap-2">
@@ -287,7 +285,6 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Top Players */}
               <div className="glass-card p-5">
                 <h3 className="font-bold text-white mb-4">أفضل 5 لاعبين</h3>
                 <div className="space-y-2">
@@ -441,7 +438,6 @@ export default function AdminPage() {
                 </button>
               </div>
 
-              {/* Add Ad Form */}
               {showAdForm && (
                 <div className="glass-card p-6 animate-fade-in">
                   <h3 className="font-bold text-white text-lg mb-4">إضافة إعلان جديد</h3>
@@ -537,7 +533,6 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {/* Ads List */}
               <div className="space-y-3">
                 {ads.map((ad) => (
                   <div key={ad.id} className={`glass-card p-5 border ${ad.isActive ? 'border-brand-success/20' : 'border-white/10 opacity-60'}`}>
