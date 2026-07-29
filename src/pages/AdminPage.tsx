@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  Shield, Users, Gamepad2, Trophy, BarChart3, Megaphone,
+  Shield, Users, Gamepad2, Trophy, BarChart3,
   LogOut, Eye, EyeOff, Settings, Plus, Trash2, Edit3,
   TrendingUp, Star, Monitor, Bell, RefreshCw
 } from 'lucide-react';
