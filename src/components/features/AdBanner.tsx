@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase'; // تأكد من مسار استيراد عميل سوبابيس لديك
+import { supabase } from '@/lib/supabase';
 import type { Advertisement } from '@/types';
 
 interface Props {
@@ -34,11 +34,7 @@ export default function AdBanner({ location, size = 'banner', className = '' }: 
         if (!error && data) {
           setAd(data);
           
-          // تحديث عداد الظهور (Impressions) في السحابة
-          await supabase
-            .from('advertisements')
-            .impressions = (data.impressions || 0) + 1;
-            
+          // تحديث عداد الظهور (Impressions) في السحابة بالطريقة الصحيحة
           await supabase
             .from('advertisements')
             .update({ impressions: (data.impressions || 0) + 1 })
@@ -78,7 +74,6 @@ export default function AdBanner({ location, size = 'banner', className = '' }: 
         onClick={handleAdClick}
         title={ad?.name || 'إعلان'}
       >
-        {/* إذا وجد كود مخصص للإعلان يتم عرضه، وإلا يظهر الشكل الافتراضي */}
         {ad?.code ? (
           <div dangerouslySetInnerHTML={{ __html: ad.code }} className="w-full h-full flex items-center justify-center" />
         ) : (
