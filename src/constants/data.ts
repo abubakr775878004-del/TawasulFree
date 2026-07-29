@@ -4,6 +4,7 @@ export const ADMIN_PASSWORD = 'tawasul2024';
 export const CONTACT_NUMBER = '775878004';
 export const SITE_NAME = 'تواصل فري';
 
+// الألعاب والمسابقات تظل جاهزة ويمكن لاحقاً ربطها بقاعدة البيانات
 export const MOCK_GAMES: Game[] = [
   {
     id: 'g1',
@@ -19,41 +20,11 @@ export const MOCK_GAMES: Game[] = [
     difficulty: 'medium',
     hasRewardedAd: true,
     questions: [
-      {
-        id: 'q1',
-        question: 'ما هي عاصمة المملكة العربية السعودية؟',
-        options: ['جدة', 'الرياض', 'مكة المكرمة', 'الدمام'],
-        correctIndex: 1,
-        points: 10,
-      },
-      {
-        id: 'q2',
-        question: 'كم عدد أيام الأسبوع؟',
-        options: ['5', '6', '7', '8'],
-        correctIndex: 2,
-        points: 10,
-      },
-      {
-        id: 'q3',
-        question: 'ما هو أكبر كوكب في المجموعة الشمسية؟',
-        options: ['الأرض', 'المريخ', 'المشتري', 'زحل'],
-        correctIndex: 2,
-        points: 10,
-      },
-      {
-        id: 'q4',
-        question: 'ما هي اللغة الأكثر انتشاراً في العالم؟',
-        options: ['الإنجليزية', 'الصينية', 'العربية', 'الإسبانية'],
-        correctIndex: 1,
-        points: 10,
-      },
-      {
-        id: 'q5',
-        question: 'كم تبلغ درجة غليان الماء؟',
-        options: ['80°C', '90°C', '100°C', '110°C'],
-        correctIndex: 2,
-        points: 10,
-      },
+      { id: 'q1', question: 'ما هي عاصمة المملكة العربية السعودية؟', options: ['جدة', 'الرياض', 'مكة المكرمة', 'الدمام'], correctIndex: 1, points: 10 },
+      { id: 'q2', question: 'كم عدد أيام الأسبوع؟', options: ['5', '6', '7', '8'], correctIndex: 2, points: 10 },
+      { id: 'q3', question: 'ما هو أكبر كوكب في المجموعة الشمسية؟', options: ['الأرض', 'المريخ', 'المشتري', 'زحل'], correctIndex: 2, points: 10 },
+      { id: 'q4', question: 'ما هي اللغة الأكثر انتشاراً في العالم؟', options: ['الإنجليزية', 'الصينية', 'العربية', 'الإسبانية'], correctIndex: 1, points: 10 },
+      { id: 'q5', question: 'كم تبلغ درجة غليان الماء؟', options: ['80°C', '90°C', '100°C', '110°C'], correctIndex: 2, points: 10 },
     ],
   },
   {
@@ -202,16 +173,6 @@ export const MOCK_LEADERBOARD: LeaderboardEntry[] = [
   { userId: 'u3', fullName: 'عبدالله عمر الغالب', points: 3980, rank: 3, weeklyPoints: 850, gamesPlayed: 65, badge: '🥉' },
   { userId: 'u4', fullName: 'فاطمة حسن النجيم', points: 3650, rank: 4, weeklyPoints: 720, gamesPlayed: 58, badge: '⭐' },
   { userId: 'u5', fullName: 'خالد يوسف الأمين', points: 3200, rank: 5, weeklyPoints: 640, gamesPlayed: 51, badge: '⭐' },
-  { userId: 'u6', fullName: 'نور عبدالرحمن صالح', points: 2980, rank: 6, weeklyPoints: 580, gamesPlayed: 46 },
-  { userId: 'u7', fullName: 'علي حمود الزبيدي', points: 2750, rank: 7, weeklyPoints: 510, gamesPlayed: 43 },
-  { userId: 'u8', fullName: 'أمل سعيد القاضي', points: 2580, rank: 8, weeklyPoints: 480, gamesPlayed: 40 },
-  { userId: 'u9', fullName: 'يوسف إبراهيم الحمدي', points: 2340, rank: 9, weeklyPoints: 420, gamesPlayed: 37 },
-  { userId: 'u10', fullName: 'ريم ناصر الغامدي', points: 2100, rank: 10, weeklyPoints: 380, gamesPlayed: 33 },
-  { userId: 'u11', fullName: 'مازن طارق العمري', points: 1950, rank: 11, weeklyPoints: 350, gamesPlayed: 29 },
-  { userId: 'u12', fullName: 'هند محمد الشمري', points: 1780, rank: 12, weeklyPoints: 310, gamesPlayed: 26 },
-  { userId: 'u13', fullName: 'كريم عصام الدين', points: 1620, rank: 13, weeklyPoints: 280, gamesPlayed: 23 },
-  { userId: 'u14', fullName: 'سلمى وليد المطيري', points: 1450, rank: 14, weeklyPoints: 250, gamesPlayed: 20 },
-  { userId: 'u15', fullName: 'باسم جمال الحمزاوي', points: 1290, rank: 15, weeklyPoints: 220, gamesPlayed: 18 },
 ];
 
 export const MOCK_WEEKLY_WINNERS: WeeklyWinner[] = [
@@ -225,28 +186,9 @@ export const MOCK_WEEKLY_WINNERS: WeeklyWinner[] = [
     reward: '50,000 ريال',
     photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
   },
-  {
-    id: 'w2',
-    userId: 'u2',
-    fullName: 'سارة محمد الحسن',
-    points: 3920,
-    weekStart: '2026-07-07',
-    weekEnd: '2026-07-13',
-    reward: '50,000 ريال',
-    photoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
-  },
-  {
-    id: 'w3',
-    userId: 'u3',
-    fullName: 'عبدالله عمر الغالب',
-    points: 3580,
-    weekStart: '2026-06-30',
-    weekEnd: '2026-07-06',
-    reward: '50,000 ريال',
-    photoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop',
-  },
 ];
 
+// الإعلانات الافتراضية كاحتياط في حال عدم الاتصال بقاعدة البيانات
 export const MOCK_ADS: Advertisement[] = [
   {
     id: 'ad1',
@@ -259,67 +201,14 @@ export const MOCK_ADS: Advertisement[] = [
     impressions: 12450,
     clicks: 234,
   },
-  {
-    id: 'ad2',
-    name: 'Adsterra - داخل اللعبة',
-    network: 'Adsterra',
-    type: 'rewarded',
-    location: 'in-game',
-    code: '',
-    link: 'https://adsterra.com/XXXX',
-    isActive: true,
-    impressions: 8920,
-    clicks: 456,
-    rewardPoints: 20,
-    showFrequency: 3,
-  },
-  {
-    id: 'ad3',
-    name: 'Monetag - بين الأقسام',
-    network: 'Monetag',
-    type: 'banner',
-    location: 'between-sections',
-    code: '<script src="https://monetag.com/XXXX"></script>',
-    isActive: true,
-    impressions: 6780,
-    clicks: 189,
-  },
-  {
-    id: 'ad4',
-    name: 'PropellerAds - تذييل',
-    network: 'PropellerAds',
-    type: 'banner',
-    location: 'footer',
-    code: '',
-    link: 'https://propellerads.com/XXXX',
-    isActive: false,
-    impressions: 2340,
-    clicks: 67,
-  },
 ];
 
 export const MOCK_ANNOUNCEMENTS: Announcement[] = [
   {
     id: 'a1',
     title: '🎉 مسابقة الأسبوع متاحة الآن!',
-    content: 'شارك في بطولة المعرفة الأسبوعية واربح جوائز قيمة. البطولة تنتهي يوم الإثنين القادم.',
+    content: 'شارك في بطولة المعرفة الأسبوعية واربح جوائز قيمة.',
     type: 'success',
-    isActive: true,
-    createdAt: '2026-07-26',
-  },
-  {
-    id: 'a2',
-    title: '📢 تحديث النظام',
-    content: 'تم إضافة ألعاب جديدة ومسابقات حصرية. اكتشف المحتوى الجديد الآن!',
-    type: 'info',
-    isActive: true,
-    createdAt: '2026-07-25',
-  },
-  {
-    id: 'a3',
-    title: '⚡ مكافآت مضاعفة اليوم!',
-    content: 'استمتع بنقاط مضاعفة على جميع الألعاب لفترة محدودة. لا تفوت الفرصة!',
-    type: 'warning',
     isActive: true,
     createdAt: '2026-07-26',
   },
