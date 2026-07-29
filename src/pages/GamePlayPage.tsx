@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, Users, Shield } from 'lucide-react';
 import { MOCK_GAMES } from '@/constants/data';
 import QuizGameEngine from '@/components/features/QuizGameEngine';
-import AdBanner from '@/components/features/AdBanner';
+import { DynamicAdSlot } from '@/components/DynamicAdSlot';
 
 export default function GamePlayPage() {
   const { id } = useParams<{ id: string }>();
@@ -42,6 +42,11 @@ export default function GamePlayPage() {
           </div>
 
           <QuizGameEngine game={game} onClose={() => navigate('/games')} />
+
+          {/* Dynamic Ad Slot - إعلان تفاعلي أسفل اللعبة */}
+          <div className="mt-8">
+            <DynamicAdSlot slotId="game_page_bottom_banner" defaultSize="90×728" />
+          </div>
         </div>
 
         {/* Sidebar */}
@@ -101,10 +106,13 @@ export default function GamePlayPage() {
             </ul>
           </div>
 
-          {/* Ad */}
-          <AdBanner location="game-sidebar" size="rectangle" />
+          {/* Dynamic Ad Slot - إعلان تفاعلي في الشريط الجانبي */}
+          <DynamicAdSlot slotId="game_page_sidebar_ad" defaultSize="100×300" />
         </div>
       </div>
+    </div>
+  );
+}
     </div>
   );
 }
