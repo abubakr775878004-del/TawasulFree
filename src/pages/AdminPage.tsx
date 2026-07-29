@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Shield, Users, Gamepad2, Trophy, BarChart3, Megaphone,
   LogOut, Eye, EyeOff, Settings, Plus, Trash2, Edit3,
   TrendingUp, Star, Monitor, Bell, RefreshCw
 } from 'lucide-react';
 import { useApp } from '@/stores/appStore';
-import { MOCK_GAMES, MOCK_COMPETITIONS, MOCK_LEADERBOARD, MOCK_ADS, MOCK_ANNOUNCEMENTS, ADMIN_PASSWORD, AD_NETWORKS } from '@/constants/data';
+import { MOCK_GAMES, MOCK_COMPETITIONS, MOCK_LEADERBOARD, MOCK_ANNOUNCEMENTS, ADMIN_PASSWORD, AD_NETWORKS } from '@/constants/data';
 import type { Advertisement, AdType, AdLocation } from '@/types';
 import { toast } from 'sonner';
+import { fetchAdsFromDB, saveAdToDB, deleteAdFromDB } from '@/lib/supabaseAds';
 
 type AdminTab = 'dashboard' | 'users' | 'games' | 'competitions' | 'ads' | 'announcements' | 'settings';
 
@@ -100,11 +101,22 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
 export default function AdminPage() {
   const { isAdmin, setIsAdmin } = useApp();
   const [tab, setTab] = useState<AdminTab>('dashboard');
-  const [ads, setAds] = useState<Advertisement[]>(MOCK_ADS);
+  const [ads, setAds] = useState<Advertisement[]>([]);
   const [showAdForm, setShowAdForm] = useState(false);
   const [newAd, setNewAd] = useState<Partial<Advertisement>>({
     type: 'banner', location: 'header', isActive: true, impressions: 0, clicks: 0,
   });
+
+  // جلب الإعلانات من قاعدة البيانات عند فتح لوحة الإدارة
+  useEffect(() => {
+    if (isAdmin) {
+      fetchAdsFromDB().then((data) => {
+        if (data && data.length > 0) {
+          setAds(data);
+        }
+      });
+    }
+  }, [isAdmin]);
 
   if (!isAdmin) return <LoginForm onLogin={() => setIsAdmin(true)} />;
 
@@ -118,17 +130,31 @@ export default function AdminPage() {
     { id: 'settings', label: 'الإعدادات', icon: Settings },
   ];
 
-  const toggleAd = (id: string) => {
-    setAds((prev) => prev.map((a) => a.id === id ? { ...a, isActive: !a.isActive } : a));
-    toast.success('تم تحديث حالة الإعلان');
+  const toggleAd = async (id: string) => {
+    const adToUpdate = ads.find(a => a.id === id);
+    if (!adToUpdate) return;
+    
+    const updatedAd = { ...adToUpdate, isActive: !adToUpdate.isActive };
+    try {
+      await saveAdToDB(updatedAd);
+      setAds((prev) => prev.map((a) => a.id === id ? updatedAd : a));
+      toast.success('تم تحديث حالة الإعلان في السحابة');
+    } catch {
+      toast.error('فشل تحديث حالة الإعلان');
+    }
   };
 
-  const deleteAd = (id: string) => {
-    setAds((prev) => prev.filter((a) => a.id !== id));
-    toast.success('تم حذف الإعلان');
+  const deleteAd = async (id: string) => {
+    try {
+      await deleteAdFromDB(id);
+      setAds((prev) => prev.filter((a) => a.id !== id));
+      toast.success('تم حذف الإعلان من السحابة');
+    } catch {
+      toast.error('فشل حذف الإعلان');
+    }
   };
 
-  const addAd = () => {
+  const addAd = async () => {
     if (!newAd.name || !newAd.network) {
       toast.error('يرجى ملء الاسم وشبكة الإعلان');
       return;
@@ -146,10 +172,16 @@ export default function AdminPage() {
       clicks: 0,
       rewardPoints: newAd.rewardPoints,
     };
-    setAds((prev) => [...prev, ad]);
-    setNewAd({ type: 'banner', location: 'header', isActive: true, impressions: 0, clicks: 0 });
-    setShowAdForm(false);
-    toast.success('تم إضافة الإعلان بنجاح!');
+
+    try {
+      await saveAdToDB(ad);
+      setAds((prev) => [...prev, ad]);
+      setNewAd({ type: 'banner', location: 'header', isActive: true, impressions: 0, clicks: 0 });
+      setShowAdForm(false);
+      toast.success('تم إضافة الإعلان وحفظه في السحابة بنجاح!');
+    } catch {
+      toast.error('فشل حفظ الإعلان في قاعدة البيانات');
+    }
   };
 
   return (
@@ -431,7 +463,7 @@ export default function AdminPage() {
           {tab === 'ads' && (
             <div className="space-y-6 animate-fade-in">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-black text-white">إدارة الإعلانات</h2>
+                <h2 className="text-2xl font-black text-white">إدارة الإعلانات (سحابي)</h2>
                 <button onClick={() => setShowAdForm(!showAdForm)} className="btn-primary text-sm py-2 px-4">
                   <Plus size={16} />
                   إضافة إعلان
