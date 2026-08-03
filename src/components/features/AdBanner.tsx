@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import type { Advertisement } from '@/types';
 
-// استبدل هذه القيم ببيانات مشروعك الفعلية في سوبابيس إذا لزم الأمر
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
@@ -21,9 +20,9 @@ const SIZE_CONFIG = {
   rectangle: { label: 'إعلان 300×100' },
 };
 
-export default function AdBanner({ location, size = 'square', className = '' }: Props) {
+export default function AdBanner({ location, size = 'banner', className = '' }: Props) {
   const [ad, setAd] = useState<Advertisement | null>(null);
-  const cfg = SIZE_CONFIG[size] || SIZE_CONFIG.square;
+  const cfg = SIZE_CONFIG[size] || SIZE_CONFIG.banner;
   const adContainerRef = useRef<HTMLDivElement>(null);
 
   // جلب الإعلان من Supabase إن وجد
@@ -54,7 +53,7 @@ export default function AdBanner({ location, size = 'square', className = '' }: 
     fetchAd();
   }, [location]);
 
-  // حقن كود HilltopAds تلقائياً في حال لم يكن هناك إعلان مخصص من قاعدة البيانات
+  // حقن كود HilltopAds تلقائياً في حال عدم وجود إعلان في قاعدة البيانات
   useEffect(() => {
     const container = adContainerRef.current;
     if (container && (!ad || !ad.code)) {
@@ -87,17 +86,17 @@ export default function AdBanner({ location, size = 'square', className = '' }: 
   };
 
   return (
-    <div className={`ad-container w-full flex justify-center my-4 ${className}`}>
+    <div className={`ad-container w-full flex justify-center my-3 ${className}`}>
       <div
-        className="ad-slot min-w-[300px] max-w-full h-auto cursor-pointer overflow-hidden relative flex justify-center items-center bg-transparent rounded-2xl"
+        className="ad-slot w-full max-w-4xl h-[90px] max-h-[100px] cursor-pointer overflow-hidden relative flex justify-center items-center bg-slate-900/40 border border-slate-700/50 rounded-xl shadow-sm"
         onClick={ad ? handleAdClick : undefined}
         title={ad?.name || 'إعلان'}
       >
         {ad?.code ? (
-          <div dangerouslySetInnerHTML={{ __html: ad.code }} className="w-full flex justify-center items-center" />
+          <div dangerouslySetInnerHTML={{ __html: ad.code }} className="w-full h-full flex justify-center items-center" />
         ) : (
-          <div ref={adContainerRef} className="w-full flex justify-center items-center min-h-[100px]">
-            {/* يتم ضبط الحجم والارتفاع تلقائياً حسب مقاس الإعلان */}
+          <div ref={adContainerRef} className="w-full h-full flex justify-center items-center scale-90 sm:scale-100">
+            {/* إعلان نحيف أفقياً من اليمين إلى اليسار بارتفاع محدود */}
           </div>
         )}
       </div>
