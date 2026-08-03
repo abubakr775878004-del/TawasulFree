@@ -5,6 +5,7 @@ import { AppContext, useAppStore } from '@/stores/appStore';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import UserRegistrationModal from '@/components/features/UserRegistrationModal';
+import BannerAd from '@/components/ui/BannerAd'; // استيراد مكون البنر الإعلاني
 import HomePage from '@/pages/HomePage';
 import GamesPage from '@/pages/GamesPage';
 import GamePlayPage from '@/pages/GamePlayPage';
@@ -73,6 +74,9 @@ function AppContent() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
+
+          {/* البنر الإعلاني (HilltopAds Banner) */}
+          <BannerAd />
 
           <Footer />
 
