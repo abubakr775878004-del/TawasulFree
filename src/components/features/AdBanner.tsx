@@ -15,10 +15,10 @@ interface Props {
 }
 
 const SIZE_CONFIG = {
-  banner: { h: 'h-20', label: 'إعلان 728×90' },
-  square: { h: 'h-48 sm:h-64', label: 'إعلان 300×250' },
-  leaderboard: { h: 'h-16', label: 'إعلان 970×90' },
-  rectangle: { h: 'h-32', label: 'إعلان 300×100' },
+  banner: { label: 'إعلان 728×90' },
+  square: { label: 'إعلان 300×250' },
+  leaderboard: { label: 'إعلان 970×90' },
+  rectangle: { label: 'إعلان 300×100' },
 };
 
 export default function AdBanner({ location, size = 'square', className = '' }: Props) {
@@ -54,7 +54,7 @@ export default function AdBanner({ location, size = 'square', className = '' }: 
     fetchAd();
   }, [location]);
 
-  // حقن كود HilltopAds تلقائياً في حال لم يكن هناك إعلان مخصص من قاعدة البيانات، أو كإعلان افتراضي
+  // حقن كود HilltopAds تلقائياً في حال لم يكن هناك إعلان مخصص من قاعدة البيانات
   useEffect(() => {
     const container = adContainerRef.current;
     if (container && (!ad || !ad.code)) {
@@ -87,17 +87,17 @@ export default function AdBanner({ location, size = 'square', className = '' }: 
   };
 
   return (
-    <div className={`ad-container w-full ${className}`}>
+    <div className={`ad-container w-full flex justify-center my-4 ${className}`}>
       <div
-        className={`ad-slot w-full ${cfg.h} cursor-pointer hover:border-white/20 transition-colors overflow-hidden relative flex items-center justify-center bg-black/20 border border-white/10 rounded-2xl`}
+        className="ad-slot min-w-[300px] max-w-full h-auto cursor-pointer overflow-hidden relative flex justify-center items-center bg-transparent rounded-2xl"
         onClick={ad ? handleAdClick : undefined}
         title={ad?.name || 'إعلان'}
       >
         {ad?.code ? (
-          <div dangerouslySetInnerHTML={{ __html: ad.code }} className="w-full h-full flex items-center justify-center" />
+          <div dangerouslySetInnerHTML={{ __html: ad.code }} className="w-full flex justify-center items-center" />
         ) : (
-          <div ref={adContainerRef} className="w-full h-full flex items-center justify-center">
-            {/* سيتم تحميل إعلان HilltopAds هنا تلقائياً */}
+          <div ref={adContainerRef} className="w-full flex justify-center items-center min-h-[100px]">
+            {/* يتم ضبط الحجم والارتفاع تلقائياً حسب مقاس الإعلان */}
           </div>
         )}
       </div>
