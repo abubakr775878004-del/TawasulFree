@@ -5,7 +5,7 @@ import { AppContext, useAppStore } from '@/stores/appStore';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import UserRegistrationModal from '@/components/features/UserRegistrationModal';
-import BannerAd from '@/components/ui/BannerAd'; // استيراد مكون البنر الإعلاني
+import BannerAd from '@/components/ui/BannerAd';
 import HomePage from '@/pages/HomePage';
 import GamesPage from '@/pages/GamesPage';
 import GamePlayPage from '@/pages/GamePlayPage';
@@ -14,11 +14,25 @@ import LeaderboardPage from '@/pages/LeaderboardPage';
 import ProfilePage from '@/pages/ProfilePage';
 import AdminPage from '@/pages/AdminPage';
 import NotFound from '@/pages/NotFound';
+import { handleUserLogin } from '@/userService';
 
 function AppContent() {
   const appState = useAppStore();
 
-  // فحص وتفعيل الإرسال الآلي والتصفير يوم الجمعة
+  // 🟢 التحقق من حساب المستخدم المسجل وتحديث نقاطه أسبوعياً عند فتح الموقع
+  useEffect(() => {
+    const syncUserData = async () => {
+      const savedName = localStorage.getItem('tawasul_user_name');
+      if (savedName) {
+        // تحديث نقاط وتفاصيل المستخدم من Supabase أوتوماتيكياً
+        await handleUserLogin(savedName);
+      }
+    };
+
+    syncUserData();
+  }, []);
+
+  // 🟢 فحص وتفعيل الإرسال الآلي وتصفيات يوم الجمعة عبر تلجرام
   useEffect(() => {
     const checkAndResetWeekly = async () => {
       const today = new Date();
@@ -34,7 +48,7 @@ function AppContent() {
 
           if (!botToken || !chatId) return;
 
-          // رسالة تقرير الجمعة والابهار الآلي عبر تلجرام
+          // رسالة تقرير الجمعة والإنذار الآلي عبر تلجرام
           const message = "🏆 *تقرير الجمعة الآلي: أبطال أسبوع شبكة TawasulNet* 🏆\n\nتم تصفير العدادات، وبدأت منافسة أسبوع جديد كلياً! بالتوفيق للجميع 🚀";
           
           await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -80,10 +94,10 @@ function AppContent() {
 
           <Footer />
 
-          {/* Registration Modal */}
+          {/* نافذة التسجيل بحساب جديد بالاسم الثلاثي الفريد */}
           {appState.showRegModal && <UserRegistrationModal />}
 
-          {/* Toast notifications */}
+          {/* التنبيهات المنبثقة */}
           <Toaster
             position="top-center"
             richColors
