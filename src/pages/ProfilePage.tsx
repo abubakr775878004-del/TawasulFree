@@ -1,14 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { Star, Gamepad2, Trophy, Calendar, TrendingUp, ArrowRight } from 'lucide-react';
+import { Star, Gamepad2, Trophy, Calendar, TrendingUp, ArrowRight, Trash2 } from 'lucide-react';
 import { useApp } from '@/stores/appStore';
 import { storage } from '@/lib/storage';
 import { MOCK_GAMES } from '@/constants/data';
 import AdBanner from '@/components/features/AdBanner';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { deleteUserAccount } from '@/userService';
 
 export default function ProfilePage() {
   const { user, setShowRegModal } = useApp();
   const navigate = useNavigate();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -18,6 +20,33 @@ export default function ProfilePage() {
   }, [user]);
 
   if (!user) return null;
+
+  // 🗑️ دالة المعالجة لحذف الحساب
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm(
+      'هل أنت تأكد من رغبتك في حذف حسابك نهائياً؟ ستفقد جميع نقاطك وسيتوفر اسمك الثلاثي للتسجيل من جديد ولا يمكن تراجع عن هذه الخطوة!'
+    );
+
+    if (!confirmDelete) return;
+
+    setIsDeleting(true);
+
+    try {
+      const res = await deleteUserAccount();
+      
+      alert(res.message);
+
+      if (res.success) {
+        // تفريغ وتحديث حالة التطبيق وإعادة التوجيه للرئيسية
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.error('Error during deletion:', error);
+      alert('حدث خطأ غير متوقع أثناء حاول الحذف!');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const sessions = storage.getSessions();
   const userSessions = sessions.filter((s) => s.userId === user.id).slice(-10).reverse();
@@ -75,7 +104,7 @@ export default function ProfilePage() {
       <AdBanner location="profile-mid" size="banner" className="mb-8" />
 
       {/* Recent Sessions */}
-      <div className="glass-card p-6">
+      <div className="glass-card p-6 mb-8">
         <h2 className="text-xl font-bold text-white mb-4">آخر الألعاب</h2>
         {userSessions.length === 0 ? (
           <div className="text-center py-8">
@@ -112,6 +141,26 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+
+      {/* 🔴 Danger Zone / منطقة الخطر (حذف الحساب) */}
+      <div className="glass-card p-6 border border-red-500/20 bg-red-500/5">
+        <h2 className="text-lg font-bold text-red-400 mb-2 flex items-center gap-2">
+          <Trash2 size={20} />
+          إدارة الحساب
+        </h2>
+        <p className="text-white/60 text-sm mb-4">
+          حذف الحساب سيمسح جميع بياناتك، نقاطك المكتسبة، وإتاحة اسمك الثلاثي للآخرين.
+        </p>
+        <button
+          onClick={handleDeleteAccount}
+          disabled={isDeleting}
+          className="w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white font-bold rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-lg"
+        >
+          <Trash2 size={18} />
+          {isDeleting ? 'جاري الحذف...' : 'حذف الحساب نهائياً'}
+        </button>
+      </div>
+
     </div>
   );
 }
